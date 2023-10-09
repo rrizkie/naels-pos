@@ -204,7 +204,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ username, children }) => {
             </div>
           </Dropdown>
         </div>
-        <div className="p-16 overflow-scroll">
+        <div className="p-16 overflow-y-scroll">
           <Typography
             className="mb-24"
             style={{

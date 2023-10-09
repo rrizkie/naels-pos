@@ -14,7 +14,7 @@ import DashboardCard from "@/components/DashboardCard";
 import { DATE_SHORT_FORMAT, getDate } from "@/utils/date";
 import { numberFormat } from "@/utils/currency";
 import { PageProps } from "../_app";
-import { BRANCH, MENU } from "@/constants";
+import { BRANCH, MENU, ROLE } from "@/constants";
 import { DownOutlined, VerticalAlignBottomOutlined } from "@ant-design/icons";
 import CustomTable, { FilterProps, FilterType } from "@/components/CustomTable";
 import { FilterFieldType } from "@/components/FilterDialog";
@@ -80,7 +80,7 @@ const Dashboard: React.FC<PageProps> = (props) => {
     // },
   ];
 
-  const filterProps: FilterProps = {
+  const filterProps: FilterProps | undefined = {
     branch,
     role,
     items: [FilterType.BRANCH, FilterType.ARTIST, FilterType.DATE],
@@ -113,8 +113,8 @@ const Dashboard: React.FC<PageProps> = (props) => {
 
   const fetchTransactions = useCallback(async () => {
     const params = {
-      ...(branch !== BRANCH.ALL_BRANCH && { branch }),
       ...filter,
+      ...(branch !== BRANCH.ALL_BRANCH && { branch }),
       page,
       size: 10,
     };
@@ -162,17 +162,18 @@ const Dashboard: React.FC<PageProps> = (props) => {
 
   return (
     <div className="flex flex-col gap-24">
+      {branch === BRANCH.ALL_BRANCH && (
+        <div className="flex gap-12 w-full">
+          <DashboardCard
+            label="All Branch"
+            value={`Rp. ${numberFormat(
+              transactionSummary?.total_transaction as number
+            )}`}
+          />
+        </div>
+      )}
       <div className="flex gap-12 w-full">
-        <DashboardCard
-          label="All Branch"
-          value={`Rp. ${numberFormat(
-            transactionSummary?.total_transaction as number
-          )}`}
-        />
-      </div>
-      <div className="flex gap-12 w-full">
-        {branch === BRANCH.ALL_BRANCH &&
-          transactionSummary &&
+        {transactionSummary &&
           transactionSummary?.data.map(
             (transaction: TransactionSummaryType, index: number) => (
               <DashboardCard
@@ -194,8 +195,8 @@ const Dashboard: React.FC<PageProps> = (props) => {
         }}
         onChangePagination={handlePagination}
         loading={loading}
-        onExport={handleExport}
-        filter={filterProps}
+        onExport={branch === BRANCH.ALL_BRANCH ? handleExport : undefined}
+        filter={branch === BRANCH.ALL_BRANCH ? filterProps : undefined}
         token={access_token}
       />
     </div>
