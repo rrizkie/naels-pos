@@ -1105,6 +1105,7 @@ body {
   }
 }
 
+/** MENU  */
 .ant-menu .ant-menu-item {
   color: white !important;
   font-size: 16px;
@@ -1132,3 +1133,29 @@ li.ant-menu-item.ant-menu-item-active:not(
     align-items: center;
   }
 }
+
+/** END OF MENU  */
+
+/** TABLE  */
+
+thead.ant-table-thead .ant-table-cell {
+  background: #232d3f !important;
+  color: white !important;
+}
+
+tbody.ant-table-tbody .ant-table-cell {
+  color: #232d3f !important;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+li.ant-pagination-item.ant-pagination-item.ant-pagination-item-active a {
+  color: white !important;
+}
+
+li.ant-pagination-item.ant-pagination-item.ant-pagination-item-active {
+  border-color: #232d3f;
+  background-color: #232d3f;
+}
+
+/** END OF TABLE  */

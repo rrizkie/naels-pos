@@ -1,3 +1,4 @@
+import { Router } from "next/router";
 import { showErrorNotification } from "./notification";
 
 export const getErrorResponse = (err: any) => {
@@ -24,7 +25,7 @@ export const getErrorCode = (err: any) => {
 
 export const getErrorMessage = (err: any, withCode?: boolean) => {
   if (err) {
-    return err.response.data.message;
+    return err?.response?.data?.message;
   }
 };
 

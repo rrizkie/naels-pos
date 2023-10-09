@@ -1,4 +1,4 @@
-import { BASE_URL } from "@/constants";
+import { BASE_URL, MENU } from "@/constants";
 import axios from "axios";
 
 export type ServiceProps = {
@@ -13,6 +13,21 @@ export enum Methods {
   POST = "post",
   PUT = "put",
 }
+
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (err) => {
+    let errorCode = err?.response?.status;
+    if (errorCode === 401) {
+      if (typeof window !== "undefined") {
+        window.location.href = MENU.LOGOUT;
+      }
+    }
+    return Promise.reject(err);
+  }
+);
 
 export const apiCall = (
   method: Methods,

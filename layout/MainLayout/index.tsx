@@ -97,7 +97,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ username, children }) => {
   }, []);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       {isMobile && (
         <Drawer
           open={isDrawerOpen}
@@ -204,7 +204,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ username, children }) => {
             </div>
           </Dropdown>
         </div>
-        <div className="p-16">
+        <div className="p-16 overflow-scroll">
           <Typography
             className="mb-24"
             style={{

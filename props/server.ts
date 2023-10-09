@@ -1,4 +1,4 @@
-import { MENU, SERVER_COKIES_KEY, STORAGE_KEY } from "@/constants";
+import { MENU, SERVER_COKIES_KEY } from "@/constants";
 import { getCookie, setCookie } from "cookies-next";
 
 export const loginPageHandler = ({ req, res }: any) => {

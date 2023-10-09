@@ -1,3 +1,4 @@
+import { BRANCH, ROLE } from "@/constants";
 import MainLayout from "@/layout/MainLayout";
 import { mainPageHandler } from "@/props/server";
 import "@/styles/globals.css";
@@ -11,8 +12,8 @@ export async function getServerSideProps(context: any) {
 export type PageProps = {
   access_token: string;
   username: string;
-  role: string;
-  branch: string;
+  role: ROLE;
+  branch: BRANCH;
   isLoggedIn: boolean;
 };
 
