@@ -96,14 +96,15 @@ const Dashboard: React.FC<PageProps> = (props) => {
       });
     },
     onApply: (val) => {
-      setPage(1);
       if (val.date) {
-        val.start_date = moment(val.date[0]).format("YYYY-MM-DD");
-        val.end_date = moment(val.date[1]).format("YYYY-MM-DD");
+        val.start_date = moment(new Date(val.date[0])).format("YYYY-MM-DD");
+        val.end_date = moment(new Date(val.date[1])).format("YYYY-MM-DD");
 
         delete val.date;
       }
+
       setFilter(val);
+      setPage(1);
       replace({
         pathname: MENU.DASHBOARD,
         query: { ...val },

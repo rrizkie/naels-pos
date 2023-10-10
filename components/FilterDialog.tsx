@@ -101,13 +101,13 @@ const FilterDialog: FC<FiletDialogProps> = ({
         <Form.Item<FilterFieldType> label="Nail Artist" name="artist">
           <Input disabled={loading} allowClear />
         </Form.Item>
-        {/* <Form.Item<FilterFieldType> label="Transaction Date" name="date">
+        <Form.Item<FilterFieldType> label="Transaction Date" name="date">
           <RangePicker
             disabled={loading}
             className="w-full"
             format={"DD-MM-YYYY"}
           />
-        </Form.Item> */}
+        </Form.Item>
 
         <div className="flex justify-between items-center gap-12 mt-24">
           <Button
