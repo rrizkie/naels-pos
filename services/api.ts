@@ -36,6 +36,7 @@ export const apiCall = (
     data?: any;
     params?: any;
     token?: string;
+    responseType?: "arraybuffer" | "document" | "json" | "text" | "stream";
   }
 ) => {
   axios.defaults.headers.common = {

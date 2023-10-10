@@ -5,8 +5,8 @@ type TransactionProps = {
   params?: {
     branch?: string;
     artist?: string;
-    page: number;
-    size: number;
+    page?: number;
+    size?: number;
   };
 } & ServiceProps;
 
@@ -41,6 +41,30 @@ export const getTransactions = async ({
     });
 
     onSuccess(res.data as TransactionResponse);
+  } catch (error) {
+    onErrorAPICall(error);
+    onFailed && onFailed(error);
+  } finally {
+    setLoading && setLoading(false);
+  }
+};
+
+export const exportTransactions = async ({
+  token,
+  params,
+  setLoading,
+  onSuccess,
+  onFailed,
+}: TransactionProps) => {
+  setLoading && setLoading(true);
+  try {
+    const res = await apiCall(Methods.GET, "transaction/export", {
+      params,
+      token,
+      responseType: "arraybuffer",
+    });
+
+    onSuccess(res.data);
   } catch (error) {
     onErrorAPICall(error);
     onFailed && onFailed(error);

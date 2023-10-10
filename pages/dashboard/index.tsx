@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Table, Typography } from "antd";
+import { Typography } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { mainPageHandler } from "@/props/server";
 import {
@@ -7,6 +7,7 @@ import {
   TransactionSummaryResponse,
   TransactionSummaryType,
   TransactionType,
+  exportTransactions,
   getTransactionSummary,
   getTransactions,
 } from "@/services/transaction";
@@ -14,13 +15,12 @@ import DashboardCard from "@/components/DashboardCard";
 import { DATE_SHORT_FORMAT, getDate } from "@/utils/date";
 import { numberFormat } from "@/utils/currency";
 import { PageProps } from "../_app";
-import { BRANCH, MENU, ROLE } from "@/constants";
-import { DownOutlined, VerticalAlignBottomOutlined } from "@ant-design/icons";
+import { BRANCH, MENU } from "@/constants";
 import CustomTable, { FilterProps, FilterType } from "@/components/CustomTable";
 import { FilterFieldType } from "@/components/FilterDialog";
 import { useRouter } from "next/router";
-import dayjs from "dayjs";
 import moment from "moment";
+import exportFile from "@/utils/exportFilte";
 
 export async function getServerSideProps(context: any) {
   return mainPageHandler(context);
@@ -149,8 +149,22 @@ const Dashboard: React.FC<PageProps> = (props) => {
     setPage(val.current as number);
   };
 
-  const handleExport = () => {
-    console.log("export");
+  const handleExport = async () => {
+    const params = {
+      ...filter,
+      ...(branch !== BRANCH.ALL_BRANCH && { branch }),
+    };
+    await exportTransactions({
+      token: access_token,
+      params,
+      onSuccess: (data) => {
+        exportFile(
+          data,
+          `Transactions${moment(new Date()).format("YYYY-MM-DD")}.xlsx`
+        );
+      },
+      setLoading,
+    });
   };
 
   useEffect(() => {
