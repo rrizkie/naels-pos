@@ -12,7 +12,11 @@ import {
   getTransactions,
 } from "@/services/transaction";
 import DashboardCard from "@/components/DashboardCard";
-import { DATE_SHORT_FORMAT, getDate } from "@/utils/date";
+import {
+  getDate,
+  DEFAULT_DATE_FORMAT_DASH,
+  DATETIME_SHORT_FORMAT,
+} from "@/utils/date";
 import { numberFormat } from "@/utils/currency";
 import { PageProps } from "../_app";
 import { BRANCH, MENU } from "@/constants";
@@ -71,7 +75,7 @@ const Dashboard: React.FC<PageProps> = (props) => {
       key: "createdAt",
       dataIndex: "createdAt",
       align: "center",
-      render: (date: string) => getDate(date, DATE_SHORT_FORMAT),
+      render: (date: string) => getDate(date, DATETIME_SHORT_FORMAT),
     },
     // {
     //   title: "Artist",
@@ -96,9 +100,17 @@ const Dashboard: React.FC<PageProps> = (props) => {
       });
     },
     onApply: (val) => {
+      for (const key in val) {
+        if (!val[key]) delete val[key];
+      }
+
       if (val.date) {
-        val.start_date = moment(new Date(val.date[0])).format("YYYY-MM-DD");
-        val.end_date = moment(new Date(val.date[1])).format("YYYY-MM-DD");
+        val.start_date = moment(new Date(val.date[0])).format(
+          DEFAULT_DATE_FORMAT_DASH
+        );
+        val.end_date = moment(new Date(val.date[1])).format(
+          DEFAULT_DATE_FORMAT_DASH
+        );
 
         delete val.date;
       }
@@ -160,7 +172,9 @@ const Dashboard: React.FC<PageProps> = (props) => {
       onSuccess: (data) => {
         exportFile(
           data,
-          `Transactions${moment(new Date()).format("YYYY-MM-DD")}.xlsx`
+          `Transactions${moment(new Date()).format(
+            DEFAULT_DATE_FORMAT_DASH
+          )}.xlsx`
         );
       },
       setLoading,

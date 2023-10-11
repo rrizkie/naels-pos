@@ -53,7 +53,6 @@ const FilterDialog: FC<FiletDialogProps> = ({
   }, [token]);
 
   const handleApply = (val: FilterFieldType) => {
-    console.log(val);
     onApply(val);
     onClose();
     form.resetFields();
