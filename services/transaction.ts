@@ -1,6 +1,49 @@
 import { onErrorAPICall } from "@/utils/error";
 import { apiCall, Methods, ServiceProps } from "./api";
 
+export type TransactionType = {
+  id?: number;
+  branch_name: string;
+  total_price: number;
+  nail_artist: string;
+  status?: string;
+  isDeleted?: boolean;
+  createdAt?: Date;
+};
+
+export type CreateTransactionProps = {
+  payload: TransactionType;
+} & ServiceProps;
+
+export type CreateTransactionResponse = {
+  message: string;
+  data: TransactionType;
+  token: string;
+};
+
+export const createTransaction = async ({
+  token,
+  payload,
+  onSuccess,
+  onFailed,
+  setLoading,
+}: CreateTransactionProps) => {
+  setLoading && setLoading(true);
+  try {
+    const res = await apiCall(Methods.POST, "transaction", {
+      data: payload,
+      token,
+    });
+
+    onSuccess(res.data as CreateTransactionResponse);
+  } catch (error) {
+    onErrorAPICall(error);
+    onFailed && onFailed(error);
+  } finally {
+    setLoading && setLoading(false);
+  }
+};
+
 type TransactionProps = {
   params?: {
     branch?: string;
@@ -9,17 +52,6 @@ type TransactionProps = {
     size?: number;
   };
 } & ServiceProps;
-
-export type TransactionType = {
-  id?: number;
-  branch_name: string;
-  total_price: number;
-  nail_artist_id: number;
-  nail_artist: string;
-  status: string;
-  isDeleted: boolean;
-  createdAt: Date;
-};
 
 export type TransactionResponse = {
   data: TransactionType[];

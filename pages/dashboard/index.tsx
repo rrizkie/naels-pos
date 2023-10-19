@@ -19,7 +19,7 @@ import {
 } from "@/utils/date";
 import { numberFormat } from "@/utils/currency";
 import { PageProps } from "../_app";
-import { BRANCH, MENU } from "@/constants";
+import { BRANCH, MENU, TRANSACTION_STATUS } from "@/constants";
 import CustomTable, { FilterProps, FilterType } from "@/components/CustomTable";
 import { FilterFieldType } from "@/components/FilterDialog";
 import { useRouter } from "next/router";
@@ -77,11 +77,21 @@ const Dashboard: React.FC<PageProps> = (props) => {
       align: "center",
       render: (date: string) => getDate(date, DATETIME_SHORT_FORMAT),
     },
-    // {
-    //   title: "Artist",
-    //   key: "nail_artist",
-    //   dataIndex: "nail_artist",
-    // },
+    {
+      title: "Status",
+      key: "status",
+      dataIndex: "status",
+      align: "center",
+      render: (status: string) => (
+        <Typography
+          style={{
+            color: status === TRANSACTION_STATUS.PAID ? "green" : "red",
+          }}
+        >
+          {status}
+        </Typography>
+      ),
+    },
   ];
 
   const filterProps: FilterProps | undefined = {

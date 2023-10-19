@@ -1,6 +1,10 @@
 export const BASE_URL = "http://localhost:8080/api/";
 
+export const MIDTRANS_CLIENT_KEY = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+export const MIDTRANS_URL = process.env.NEXT_PUBLIC_MIDTRANS_URL;
+
 export const LOGO = "/images/naels-logo.png";
+export const IMAGE_PLACEHOLDER = "/images/img-placeholder.png";
 
 export const MENU = {
   LOGIN: "/",
@@ -34,4 +38,9 @@ export enum ROLE {
   OWNER = "OWNER",
   BRANCH_OWNER = "BRANCH_OWNER",
   NAIL_ARTIST = "NAIL_ARTIST",
+}
+
+export enum TRANSACTION_STATUS {
+  PAID = "PAID",
+  UNPAID = "UNPAID",
 }

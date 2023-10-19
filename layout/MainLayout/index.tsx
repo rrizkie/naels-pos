@@ -176,7 +176,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ username, children }) => {
       <div className="flex flex-col w-full">
         <div
           className="flex justify-between items-center p-16"
-          style={{ borderBottom: "0.5px solid #232d3f" }}
+          style={{ borderBottom: "2px solid #f0f0f0" }}
         >
           {isMobile ? (
             <MenuOutlined
@@ -204,7 +204,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ username, children }) => {
             </div>
           </Dropdown>
         </div>
-        <div className="p-16 overflow-y-scroll">
+        <div className="p-16" style={{ overflowX: "auto", height: "100%" }}>
           <Typography
             className="mb-24"
             style={{
