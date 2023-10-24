@@ -21,6 +21,7 @@ type MenuItem = Required<MenuProps>["items"][number];
 enum MenuKey {
   Dashboard = "dashboard",
   Transaction = "transaction",
+  Promotion = "promotion"
 }
 
 type MainLayoutProps = {
@@ -65,6 +66,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({ username, children }) => {
     getItem(
       getMenuLabel("Transaction"),
       MenuKey.Transaction,
+      <TransactionOutlined style={{ fontSize: 16 }} />
+    ),
+    getItem(
+      getMenuLabel("Promotions"),
+      MenuKey.Promotion,
       <TransactionOutlined style={{ fontSize: 16 }} />
     ),
   ];

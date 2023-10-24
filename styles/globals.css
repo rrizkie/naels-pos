@@ -1159,3 +1159,9 @@ li.ant-pagination-item.ant-pagination-item.ant-pagination-item-active {
 }
 
 /** END OF TABLE  */
+
+/** SWITCH */
+button.ant-switch.css-dev-only-do-not-override-pr0fja.ant-switch-checked {
+  background: #232d3f !important;
+}
+/** END OF SWITCH */

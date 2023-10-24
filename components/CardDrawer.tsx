@@ -1,5 +1,7 @@
+import { BRANCH, ROLE } from "@/constants";
 import useBreakPoints from "@/hooks/useBreakPoints";
 import { SelectedItem } from "@/pages/transaction";
+import { BranchType, getBranches } from "@/services/branch";
 import { PromotionType, getPromotions } from "@/services/promotion";
 import { numberFormat } from "@/utils/currency";
 import { Button, Divider, Drawer, Select } from "antd";
@@ -8,11 +10,16 @@ import React, { FC, useCallback, useEffect, useState } from "react";
 interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (promo: PromotionType, grandTotal: number) => void;
+  onConfirm: (
+    promo: PromotionType,
+    grandTotal: number,
+    branch?: BRANCH
+  ) => void;
   loading: boolean;
   items: SelectedItem[];
   totalPrice: number;
   token: string;
+  role: string;
 }
 
 const CartDrawer: FC<CartDrawerProps> = ({
@@ -23,9 +30,15 @@ const CartDrawer: FC<CartDrawerProps> = ({
   items,
   totalPrice,
   token,
+  role,
 }) => {
   const { isMobile } = useBreakPoints();
   const downPayment = totalPrice / 2;
+
+  const [branchOptions, setBranchOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
+  const [selectedBranch, setSelectedBranch] = useState<BRANCH | null>(null);
 
   const [promotions, setPromotions] = useState<PromotionType[]>([]);
   const [selectedPromotion, setSelectedPromotion] =
@@ -38,9 +51,10 @@ const CartDrawer: FC<CartDrawerProps> = ({
 
   const fetchPromotion = useCallback(async () => {
     await getPromotions({
+      params: { isActive: true },
       token,
       onSuccess: (data) => {
-        setPromotions(data);
+        setPromotions(data.data);
       },
     });
   }, [token]);
@@ -54,17 +68,36 @@ const CartDrawer: FC<CartDrawerProps> = ({
     const total = selectedPromotion
       ? totalPrice - (totalPrice * selectedPromotion?.value) / 100 - downPayment
       : totalPrice - downPayment;
-    onConfirm(selectedPromotion as PromotionType, total);
+    onConfirm(
+      selectedPromotion as PromotionType,
+      total,
+      selectedBranch as BRANCH
+    );
   };
 
   useEffect(() => {
     if (token) fetchPromotion();
   }, [fetchPromotion]);
 
+  useEffect(() => {
+    if (role === ROLE.DEV || role === ROLE.OWNER) {
+      getBranches({
+        token,
+        onSuccess: (data: BranchType[]) => {
+          const options = data.map((el: BranchType) => ({
+            value: el.name,
+            label: el.name,
+          }));
+          setBranchOptions(options);
+        },
+      });
+    }
+  }, [token, role]);
+
   return (
     <Drawer
       open={isOpen}
-      title="Cart"
+      title="Transaction Cart"
       closable
       onClose={handleClose}
       width={isMobile ? "100%" : "30%"}
@@ -92,6 +125,27 @@ const CartDrawer: FC<CartDrawerProps> = ({
       }
     >
       <div className="flex flex-col">
+        {(role === ROLE.DEV || role === ROLE.OWNER) && (
+          <>
+            <div
+              style={{
+                fontSize: "17px",
+                fontWeight: 700,
+                marginBottom: "12px",
+              }}
+            >
+              Branch
+            </div>
+            <Select
+              value={selectedPromotion?.id}
+              placeholder="please Select branch"
+              options={branchOptions}
+              onChange={(val) => setSelectedBranch(val as any)}
+              allowClear
+            />
+            <Divider />
+          </>
+        )}
         <div
           style={{
             fontSize: "17px",

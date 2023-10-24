@@ -1,4 +1,4 @@
-import { IMAGE_PLACEHOLDER, MENU } from "@/constants";
+import { BRANCH, IMAGE_PLACEHOLDER, MENU } from "@/constants";
 import { mainPageHandler } from "@/props/server";
 import { ItemType, getitems } from "@/services/item";
 import { Card, Col, Row, Typography } from "antd";
@@ -29,7 +29,7 @@ export type SelectedItem = {
 };
 
 const Transaction: FC<PageProps> = (props) => {
-  const { access_token, branch, username } = props;
+  const { access_token, branch, username, role } = props;
   const { isMobile } = useBreakPoints();
   const { push } = useRouter();
 
@@ -95,12 +95,13 @@ const Transaction: FC<PageProps> = (props) => {
 
   const handleConfirmCart = async (
     promo: PromotionType | null,
-    total: number
+    total: number,
+    selectedBranch?: BRANCH
   ) => {
     const payload = {
       total_price: total,
       nail_artist: username,
-      branch_name: branch,
+      branch_name: selectedBranch ?? branch,
       ...(promo && {
         promotion_name: promo.name,
         promotion_value: promo.value,
@@ -225,6 +226,7 @@ const Transaction: FC<PageProps> = (props) => {
         onConfirm={handleConfirmCart}
         loading={loading}
         token={access_token}
+        role={role}
       />
     </div>
   );
