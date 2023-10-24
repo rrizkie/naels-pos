@@ -1,4 +1,4 @@
-import { BRANCH, IMAGE_PLACEHOLDER, MENU } from "@/constants";
+import { BRANCH, IMAGE_PLACEHOLDER } from "@/constants";
 import { mainPageHandler } from "@/props/server";
 import { ItemType, getitems } from "@/services/item";
 import { Card, Col, Row, Typography } from "antd";
@@ -93,13 +93,23 @@ const Transaction: FC<PageProps> = (props) => {
     ]);
   };
 
+  const handleRemoveItems = (item: SelectedItem) => {
+    const filtered = selectedItems.filter((el) => el.name !== item.name);
+    setSelectedItems(() => filtered);
+    setTotalPrice((prev) => prev - item.price * item.qty);
+  };
+
   const handleConfirmCart = async (
     promo: PromotionType | null,
     total: number,
+    downpayment: number,
+    discount: number,
     selectedBranch?: BRANCH
   ) => {
     const payload = {
-      total_price: total,
+      downpayment,
+      total_discount: discount,
+      total_transaction: total,
       nail_artist: username,
       branch_name: selectedBranch ?? branch,
       ...(promo && {
@@ -221,6 +231,7 @@ const Transaction: FC<PageProps> = (props) => {
       <CartDrawer
         isOpen={cartDrawer}
         items={selectedItems}
+        onRemove={handleRemoveItems}
         totalPrice={totalPrice}
         onClose={() => setCartDrawer(false)}
         onConfirm={handleConfirmCart}

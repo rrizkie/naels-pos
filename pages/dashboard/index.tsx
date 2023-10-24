@@ -64,9 +64,27 @@ const Dashboard: React.FC<PageProps> = (props) => {
       ),
     },
     {
+      title: "Promo",
+      key: "promotion_name",
+      dataIndex: "promotion_name",
+      render: (promotion_name: string, transaction) =>
+        promotion_name ? (
+          <div>
+            <Typography style={{ fontWeight: 700 }}>
+              {promotion_name}
+            </Typography>
+            <Typography style={{ fontWeight: 600, color: "#667085" }}>
+              {transaction.promotion_value}%
+            </Typography>
+          </div>
+        ) : (
+          "-"
+        ),
+    },
+    {
       title: "Total Price",
-      key: "total_price",
-      dataIndex: "total_price",
+      key: "total_transaction",
+      dataIndex: "total_transaction",
       align: "center",
       render: (price: number) => `Rp.${numberFormat(price)}`,
     },

@@ -4,9 +4,13 @@ import { apiCall, Methods, ServiceProps } from "./api";
 export type TransactionType = {
   id?: number;
   branch_name: string;
-  total_price: number;
+  total_transaction: number;
+  downpayment: number;
+  total_discount: number;
   nail_artist: string;
   status?: string;
+  promotion_name?: string;
+  promotion_value?: number;
   isDeleted?: boolean;
   createdAt?: Date;
 };
